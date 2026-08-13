@@ -1,3 +1,6 @@
 langgraph langchain-ollama
 python-dotenv
- 
+langgraph-checkpoint-sqlite 
+langchain-core
+langchain
+langgraph
