@@ -1,14 +1,11 @@
-# --- secrets: never commit, never sync ---
 .env
 .env.*
 !.env.example
 
-# --- python ---
 __pycache__/
 *.py[cod]
 .venv/
 venv/
 
-# --- os noise ---
 Thumbs.db
 .DS_Store
