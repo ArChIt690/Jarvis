@@ -1,6 +1,3 @@
-# --- code lives in its own repo (backend/.git) ---
-backend/
-
 # --- secrets: never commit, never sync ---
 .env
 .env.*
