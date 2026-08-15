@@ -1,5 +1,6 @@
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.prebuilt import ToolNode , tools_condition
 import sqlite3
 from typing import TypedDict,Annotated
 from langgraph.graph import StateGraph, START , END
@@ -21,22 +22,19 @@ llm = ChatOllama(
 def chat_node(state: ChatState) -> ChatState:
     System_msg = SystemMessage(content = path_conn())
     msgs = state["messages"]
-    llm_response = llm.invoke([System_msg]+msgs)
+    lesson_tool = llm.bind_tools([save_lesson])
+    llm_response = lesson_tool.invoke([System_msg]+msgs)
     return {"messages": llm_response}
-
-def lesson_node(state: ChatState) -> ChatState:
-    llm.bind_tools([save_lesson])
-    return {"messages": llm}
 
 conn = sqlite3.connect(CHECKPOINT_DB , check_same_thread=False)
 memory_saver = SqliteSaver(conn)
 
 graph = StateGraph(ChatState)
 graph.add_node("chatnode" ,chat_node)
-graph.add_node("lessonnode", lesson_node)
-graph.add_edge(START, "lessonnode")
-graph.add_edge("lessonnode", "lessonnode")
-graph.add_edge("lessonnode", END)
+graph.add_node("tools", ToolNode([save_lesson]))
+
+graph.add_edge(START, "chatnode")
+graph.add_conditional_edges("chatnode" , tools_condition)
+graph.add_edge("tools" , "chatnode")
 
 message_out = graph.compile(checkpointer = memory_saver)
-
