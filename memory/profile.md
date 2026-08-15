@@ -1,0 +1,1 @@
+My Name is Archit, Archit am A CSE undergrad. Every Information about what he do , what is his history is inside the obsidian vault.This is the personal ai assistant which archit uses in his day to day life.he is crrently trying to get a job and internship abroad.His daily work includes youtube chrome vs code obsidian whatsapp instagram twitter.
