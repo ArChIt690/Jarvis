@@ -8,6 +8,7 @@ from langchain_core.messages import BaseMessage, SystemMessage
 from langgraph.graph.message import add_messages
 from config.settings import OLLAMA_MODEL, OLLAMA_NUM_CTX,CHECKPOINT_DB
 from memory.profile import path_conn
+from memory.lesson import lesson_path
 from tools.lesson import save_lesson
 
 class ChatState(TypedDict):
@@ -20,7 +21,12 @@ llm = ChatOllama(
 )
 
 def chat_node(state: ChatState) -> ChatState:
-    System_msg = SystemMessage(content = path_conn())
+    System_msg = SystemMessage(content = f"""'About the user' 
+                                         {path_conn()} 
+                                         
+                                         Learned preferences — follow these strictly 
+                                         {lesson_path()} 
+                                """)
     msgs = state["messages"]
     lesson_tool = llm.bind_tools([save_lesson])
     llm_response = lesson_tool.invoke([System_msg]+msgs)

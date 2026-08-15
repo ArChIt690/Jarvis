@@ -1,5 +1,6 @@
 from langchain_core.tools import  tool
 from memory.lesson import record_event
+from memory.profile import path_conn
 
 
 @tool

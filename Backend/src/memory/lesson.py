@@ -8,3 +8,9 @@ def record_event(text):
     stamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     with open(path, "a" , encoding="utf-8") as f:
         f.write(f"{stamp}: {text}\n")
+
+def lesson_path():
+    path = LESSONS_DIR / "lesson_events.md"
+    if not path.exists():
+        return ""
+    return path.read_text(encoding= "utf-8")
