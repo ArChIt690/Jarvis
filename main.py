@@ -24,4 +24,6 @@ while True:
             "thread_id" : "chat_thread",
         }},
         )
-    print(msg["messages"][-1].content)
+
+    chat_output = msg["messages"][-1].content
+    print(chat_output)
