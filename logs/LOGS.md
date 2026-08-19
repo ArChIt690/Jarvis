@@ -12,3 +12,11 @@ Hello again! How can I assist you today?
  You are Archit, an undergraduate in Computer Science and Engineering who is currently focusing on getting a job and internship abroad. You use tools like YouTube, Chrome, VS Code, Obsidian, WhatsApp, Instagram, and Twitter in your daily work. You also prefer to use `uv` for package management instead of `pip`.
  [] 
 
+2026-08-17_18-52-48 : hi
+ Hello Archit! How can I assist you today?
+ [] 
+
+2026-08-17_18-53-01 : whats my name
+ Your name is Archit.
+ [] 
+
