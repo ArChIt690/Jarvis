@@ -1,10 +1,13 @@
 from datetime import datetime
 from shlex import join
 import sys
+from this import s
 from config.settings import LESSONS_DIR
 from pathlib import Path
 import uuid
 from shlex import join
+
+from main import i
 
 def record_event(text):
     path = LESSONS_DIR / "lesson_events.md"
@@ -41,13 +44,20 @@ def update_lesson(lesson_id, text):
         return ""
     kept =[]
     found = False
+    stamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     for line in path.read_text(encoding = "utf-8").splitlines():
         if line.startswith(f"id = {lesson_id}"):
-            kept.append(f"id = {lesson_id} {text}")
+            kept.append(f"id = {lesson_id} {stamp}: {text}")
             found = True
         else:
             kept.append(line)
+        if lesson_id not in line:
+            record_event(text)
     temp = path.with_suffix(".temp")
     temp.write_text("\n".join(kept) + "\n", encoding = "utf-8")
     temp.replace(path)
-    return kept
+    if found:
+        return "updated"
+    else:
+        record_event(text)
+        return "created"
