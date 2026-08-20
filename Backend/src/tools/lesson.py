@@ -123,8 +123,8 @@ def delete_lesson_tool(lesson_id: str) -> str:
          User: "this answer is useless"
          -> Criticism of one output, not a retraction of the lesson.
        """
-    delete_lesson(lesson_id)
     delete_declare ="Lesson deleted successfully."
+    delete_lesson(lesson_id)
     return delete_declare
 
 

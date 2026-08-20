@@ -8,7 +8,7 @@ from langchain_core.messages import BaseMessage, SystemMessage
 from langgraph.graph.message import add_messages
 from config.settings import OLLAMA_MODEL, OLLAMA_NUM_CTX,CHECKPOINT_DB
 from memory.profile import path_conn
-from memory.lesson import lesson_path , delete_lesson
+from memory.lesson import lesson_path
 from tools.lesson import delete_lesson_tool, save_lesson, update_lesson_tool
 
 class ChatState(TypedDict):
@@ -28,7 +28,7 @@ def chat_node(state: ChatState) -> ChatState:
                                          {lesson_path()}
                                 """)
     msgs = state["messages"]
-    lesson_tool = llm.bind_tools([save_lesson] , [delete_lesson_tool] , [update_lesson_tool])
+    lesson_tool = llm.bind_tools([save_lesson, delete_lesson_tool, update_lesson_tool])
     llm_response = lesson_tool.invoke([System_msg]+msgs)
     return {"messages": llm_response}
 
