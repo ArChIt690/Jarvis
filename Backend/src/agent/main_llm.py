@@ -9,7 +9,7 @@ from langgraph.graph.message import add_messages
 from config.settings import OLLAMA_MODEL, OLLAMA_NUM_CTX,CHECKPOINT_DB
 from memory.profile import path_conn
 from memory.lesson import lesson_path , delete_lesson
-from tools.lesson import save_lesson
+from tools.lesson import delete_lesson_tool, save_lesson, update_lesson_tool
 
 class ChatState(TypedDict):
     messages: Annotated[list[BaseMessage], add_messages]
@@ -28,7 +28,7 @@ def chat_node(state: ChatState) -> ChatState:
                                          {lesson_path()}
                                 """)
     msgs = state["messages"]
-    lesson_tool = llm.bind_tools([save_lesson] , [delete_lesson])
+    lesson_tool = llm.bind_tools([save_lesson] , [delete_lesson_tool] , [update_lesson_tool])
     llm_response = lesson_tool.invoke([System_msg]+msgs)
     return {"messages": llm_response}
 
@@ -37,7 +37,7 @@ memory_saver = SqliteSaver(conn)
 
 graph = StateGraph(ChatState)
 graph.add_node("chatnode" ,chat_node)
-graph.add_node("tools", ToolNode([save_lesson , delete_lesson]))
+graph.add_node("tools", ToolNode([save_lesson , delete_lesson_tool , update_lesson_tool]))
 
 graph.add_edge(START, "chatnode")
 graph.add_conditional_edges("chatnode" , tools_condition)
