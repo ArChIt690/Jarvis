@@ -123,9 +123,8 @@ def delete_lesson_tool(lesson_id: str) -> str:
          User: "this answer is useless"
          -> Criticism of one output, not a retraction of the lesson.
        """
-    delete_declare ="Lesson deleted successfully."
-    delete_lesson(lesson_id)
-    return delete_declare
+    delete_lesson(lesson_id = lesson_id)
+    return "Lesson deleted successfully."
 
 
 @tool
@@ -185,6 +184,9 @@ def update_lesson_tool(lesson_id: str, text: str) -> str:
           -> A question, not a correction. Answer from the known text.
         """
 
-    update_lesson(lesson_id, text)
-    update_declare = f"Lesson {lesson_id} updated successfully."
+    update_declare = update_lesson(lesson_id = lesson_id, text = text)
+    if update_declare == "updated":
+        return update_declare
+    else:
+        update_declare = "created."
     return update_declare
