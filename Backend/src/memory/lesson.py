@@ -34,3 +34,20 @@ def delete_lesson(lesson_id):
     temp.write_text("\n" .join(kept) +"\n" , encoding="utf-8")
     temp.replace(path)
     return removed
+
+def update_lesson(lesson_id, text):
+    path = LESSONS_DIR / "lesson_events.md"
+    if not path.exists():
+        return ""
+    kept =[]
+    found = False
+    for line in path.read_text(encoding = "utf-8").splitlines():
+        if line.startswith(f"id = {lesson_id}"):
+            kept.append(f"id = {lesson_id} {text}")
+            found = True
+        else:
+            kept.append(line)
+    temp = path.with_suffix(".temp")
+    temp.write_text("\n".join(kept) + "\n", encoding = "utf-8")
+    temp.replace(path)
+    return kept
